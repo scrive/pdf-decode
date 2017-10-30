@@ -1,0 +1,31 @@
+version '1.0'
+
+apply plugin: 'java'
+
+repositories {
+    mavenCentral()
+    flatDir {
+        dirs 'libs'
+    }
+}
+
+dependencies {
+    compile name: 'itextpdf-5.5.5'
+    compile name: 'bcpkix-jdk15on-1.48'
+    compile name: 'bcprov-jdk15on-1.48'
+    compile 'com.sparkjava:spark-core:2.5'
+    compile 'com.google.code.gson:gson:2.7'
+    compile 'com.amazonaws:aws-lambda-java-core:1.1.0'
+    compile 'com.amazonaws:aws-lambda-java-events:1.1.0'
+    compile group: 'org.apache.commons', name: 'commons-io', version: '1.3.2'
+}
+
+task buildZip(type: Zip) {
+    from compileJava
+    from processResources
+    into('lib') {
+        from configurations.runtime
+    }
+}
+
+build.dependsOn buildZip

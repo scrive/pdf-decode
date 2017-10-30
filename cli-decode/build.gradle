@@ -1,0 +1,31 @@
+group 'org.scrive'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+
+repositories {
+    mavenCentral()
+    flatDir {
+        dirs 'libs'
+    }
+}
+
+dependencies {
+    compile name: 'itextpdf-5.5.5'
+    compile name: 'bcpkix-jdk15on-1.48'
+    compile name: 'bcprov-jdk15on-1.48'
+    compile 'com.sparkjava:spark-core:2.5'
+    compile 'com.google.code.gson:gson:2.7'
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'Main'
+    }
+
+    exclude 'META-INF/*.RSA', 'META-INF/*.SF','META-INF/*.DSA'
+
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
